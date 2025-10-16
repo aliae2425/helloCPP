@@ -1,0 +1,4 @@
+cmake_minimum_required(VERSION "4.01")
+
+project("helloCPP" VERSION "0.0.1")
+add_executable(${CMAKE_PROJECT_NAME} "main.cpp")
