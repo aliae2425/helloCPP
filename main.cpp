@@ -1,31 +1,34 @@
 #include <iostream>
 #include <vector>
+#include <string>
+#include "src/Stock.hpp"
+
 using namespace std;
 
-struct StockItem {
-    string name;
-    int quantity;
-    double price;
-    int sold;
-    double total;
-};
+
+int menu(){
+    int choice;
+    cout << "Menu:" << endl;
+    cout << "1. Chambre disponible" << endl;
+    cout << "2. Chambre occupées" << endl;
+    cout << "3. Compta" << endl;
+    cout << "4. Exit" << endl;
+    cout << "Enter your choice: ";
+    cin >> choice;
+    return choice;
+}
+
+
 
 int main(){
-    int quantity = 5;
-    int choix = 2;
+    vector<Stock> inventory;
+    inventory.emplace_back("simple room", 25, 24.99);
+    inventory.emplace_back("deluxe room", 15, 49.99);
+    inventory.emplace_back("suite", 10, 99.99);
 
-    vector<StockItem> options = {
-        {"Room", 10, 2.5, 0, 0.0},
-        {"Suite", 5, 5.0, 0, 0.0},
-        {"Deluxe", 2, 10.0, 0, 0.0}
-    };
-
-    for (auto& current : options) {
-        std:cout << current.name << endl;
-        cin >> current.sold;
-        current.total = current.sold * current.price;
-        std::cout << "Total for " << current.name << ": " << current.total << endl;
-    }
+    cout << "Welcome to the Hotel Management System!" << endl;
+    cout << "--------------------------------------" << endl;
+    cout << "choix %d" << menu() << endl;
 
     return 0;
 }

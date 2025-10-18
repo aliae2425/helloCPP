@@ -1,4 +1,12 @@
 cmake_minimum_required(VERSION "4.01")
 
 project("hotel" VERSION "0.0.2")
-add_executable(${CMAKE_PROJECT_NAME} "main.cpp")
+
+# Ajouter tous les fichiers source
+add_executable(${CMAKE_PROJECT_NAME} 
+    "main.cpp"
+    "src/Stock.cpp"
+)
+
+# Inclure les répertoires d'en-têtes
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/")
