@@ -7,10 +7,10 @@ Stock::Stock(string n, int q, double p)
     : name(n), quantity(q), price(p), sold(0), total(0.0) {}
 
 void Stock::sell(int amount) {
-    if (amount <= quantity) {
+    if (amount <= availableStocks) {
         sold += amount;
-        quantity -= amount;
         total += amount * price;
+        availableStocks -= amount;
     } else {
         std::cout << "Not enough stock for " << name << std::endl;
     }
@@ -38,5 +38,9 @@ int Stock::getSold() const {
 
 double Stock::getTotal() const {
     return total;
+}
+
+int Stock::getAvailableStocks() {
+    return availableStocks;
 }
 

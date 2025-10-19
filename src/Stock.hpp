@@ -11,6 +11,7 @@ class Stock {
         double price;
         int sold;
         double total;
+        static int availableStocks;
 
     public:
         Stock(std::string n, int q, double p);
@@ -21,5 +22,6 @@ class Stock {
         int getQuantity() const;
         int getSold() const;
         double getTotal() const;
+        static int getAvailableStocks();
 };
 #endif // DEF_STOCK
