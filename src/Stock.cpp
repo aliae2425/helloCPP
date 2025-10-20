@@ -2,14 +2,20 @@
 
 using namespace std;
 
+// Définition de la variable statique
+int Stock::availableStocks = 0;
+
 
 Stock::Stock(string n, int q, double p)
-    : name(n), quantity(q), price(p), sold(0), total(0.0) {}
+    : name(n), quantity(q), price(p), sold(0), total(0.0) {
+    availableStocks += q; // Ajouter la quantité au stock total
+}
 
 void Stock::sell(int amount) {
-    if (amount <= availableStocks) {
+    if (amount <= quantity) {
         sold += amount;
         total += amount * price;
+        quantity -= amount;
         availableStocks -= amount;
     } else {
         std::cout << "Not enough stock for " << name << std::endl;
