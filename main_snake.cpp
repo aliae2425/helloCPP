@@ -18,7 +18,7 @@ int main() {
         Game snakeGame(BOARD_WIDTH, BOARD_HEIGHT);
         
         std::cout << "=== SNAKE GAME ===" << std::endl;
-        std::cout << "Utilisez WASD ou les flèches pour jouer" << std::endl;
+        std::cout << "Utilisez ZQSD ou les flèches pour jouer" << std::endl;
         std::cout << "Appuyez sur une touche pour commencer..." << std::endl;
         std::cin.get();
         

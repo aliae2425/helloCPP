@@ -3,6 +3,8 @@
 // TODO: Implémenter le constructeur
 Snake::Snake(int startX, int startY) {
     // Initialiser le serpent à la position de départ
+    body.push_back({startX, startY});
+    currentDirection = Direction::RIGHT;
 }
 
 // TODO: Implémenter le destructeur
@@ -13,6 +15,8 @@ Snake::~Snake() {
 // TODO: Implémenter le mouvement
 void Snake::move() {
     // Déplacer le serpent selon la direction
+
+
 }
 
 // TODO: Implémenter le changement de direction
@@ -23,11 +27,15 @@ void Snake::changeDirection(Direction newDirection) {
 // TODO: Implémenter la croissance
 void Snake::grow() {
     // Augmenter la taille du serpent
+    body.push_back(body.back());
 }
 
 // TODO: Implémenter le reset
 void Snake::reset(int startX, int startY) {
     // Remettre le serpent à l'état initial
+    body.clear();
+    body.push_back({startX, startY});
+    
 }
 
 // TODO: Implémenter la détection d'auto-collision

@@ -3,9 +3,21 @@
 #include "Utils.hpp"
 #include <iostream>
 
+#include <cstdlib>
+#include <ctime>
+
 // TODO: Implémenter le constructeur
 Game::Game(int boardWidth, int boardHeight) {
     // Initialiser les membres
+    srand(time(0));
+
+    Snake Snake(boardWidth / 2, boardHeight / 2);
+    Food food(rand() % boardWidth, rand() % boardHeight);
+    Board board(boardWidth, boardHeight);
+    gameOver = false;
+    score = 0;
+    gameSpeed = 10; // Vitesse initiale
+
 }
 
 // TODO: Implémenter le destructeur
