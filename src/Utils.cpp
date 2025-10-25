@@ -41,39 +41,44 @@ void Timer::wait() {
 
 // ========== Console Class ==========
 
-// TODO: Implémenter clear
 void Console::clear() {
 #ifdef _WIN32
-    // system("cls") ou API Windows
+    system("cls");
 #else
-    // system("clear") ou séquences ANSI
+    system("clear");
 #endif
 }
 
-// TODO: Implémenter gotoxy
 void Console::gotoxy(int x, int y) {
 #ifdef _WIN32
-    // SetConsoleCursorPosition
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 #else
-    // Séquences d'échappement ANSI
+    printf("\033[%d;%dH", y + 1, x + 1);
 #endif
 }
 
-// TODO: Implémenter hideCursor
 void Console::hideCursor() {
 #ifdef _WIN32
-    // SetConsoleCursorInfo
+    CONSOLE_CURSOR_INFO cursorInfo;
+    GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
+    cursorInfo.bVisible = false;
+    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 #else
-    // Séquences ANSI
+    printf("\e[?25l");
 #endif
 }
 
-// TODO: Implémenter showCursor
 void Console::showCursor() {
 #ifdef _WIN32
-    // SetConsoleCursorInfo
+    CONSOLE_CURSOR_INFO cursorInfo;
+    GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
+    cursorInfo.bVisible = true;
+    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 #else
-    // Séquences ANSI
+    printf("\e[?25h");
 #endif
 }
 
@@ -91,26 +96,32 @@ void Console::resetColor() {
 }
 
 #ifdef _WIN32
-// TODO: Implémenter setupConsole
 void Console::setupConsole() {
-    // Configuration initiale de la console Windows
+    // Configurer l'UTF-8 pour la console Windows
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+    
+    // Améliorer l'affichage
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    GetConsoleMode(hOut, &dwMode);
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, dwMode);
 }
 
-// TODO: Implémenter restoreConsole
 void Console::restoreConsole() {
     // Restaurer les paramètres originaux
+    SetConsoleOutputCP(GetACP());
+    SetConsoleCP(GetACP());
 }
 #endif
 
 // ========== Random Class ==========
 
-// TODO: Implémenter range
 int Random::range(int min, int max) {
-    // Générer nombre aléatoire entre min et max
-    return min;
+    return rand() % (max - min + 1) + min;
 }
 
-// TODO: Implémenter seed
 void Random::seed() {
-    // Initialiser le générateur aléatoire
+    srand(time(nullptr));
 }

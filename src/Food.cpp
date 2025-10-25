@@ -2,9 +2,9 @@
 #include "Utils.hpp"
 #include <algorithm>
 
-// TODO: Implémenter le constructeur
-Food::Food(int boardWidth, int boardHeight) {
-    // Initialiser avec les dimensions du plateau
+Food::Food(int boardWidth, int boardHeight) 
+    : boardWidth(boardWidth), boardHeight(boardHeight) {
+    generateNewPosition();
 }
 
 // TODO: Implémenter le destructeur
@@ -12,14 +12,27 @@ Food::~Food() {
     // Nettoyage si nécessaire
 }
 
-// TODO: Implémenter la génération de position aléatoire
 void Food::generateNewPosition() {
-    // Générer position aléatoire sur le plateau
+    position.first = rand() % boardWidth;
+    position.second = rand() % boardHeight;
 }
 
-// TODO: Implémenter la génération en évitant le serpent
 void Food::generateNewPosition(const std::vector<std::pair<int, int>>& snakeBody) {
-    // Générer position qui ne soit pas sur le serpent
+    bool validPosition = false;
+    
+    while (!validPosition) {
+        position.first = rand() % boardWidth;
+        position.second = rand() % boardHeight;
+        
+        validPosition = true;
+        // Vérifier que la position n'est pas sur le serpent
+        for (const auto& segment : snakeBody) {
+            if (segment.first == position.first && segment.second == position.second) {
+                validPosition = false;
+                break;
+            }
+        }
+    }
 }
 
 // TODO: Implémenter les getters/setters
@@ -28,8 +41,7 @@ std::pair<int, int> Food::getPosition() const {
 }
 
 bool Food::isEaten(const std::pair<int, int>& snakeHead) const {
-    // Vérifier si la nourriture est mangée
-    return false;
+    return (snakeHead.first == position.first && snakeHead.second == position.second);
 }
 
 void Food::setBoardSize(int width, int height) {

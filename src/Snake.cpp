@@ -1,10 +1,14 @@
 #include "Snake.hpp"
 
-// TODO: Implémenter le constructeur
 Snake::Snake(int startX, int startY) {
-    // Initialiser le serpent à la position de départ
+    // Créer un serpent initial de 3 segments
     body.push_back({startX, startY});
+    body.push_back({startX - 1, startY});
+    body.push_back({startX - 2, startY});
+    
     currentDirection = Direction::RIGHT;
+    nextDirection = Direction::RIGHT;
+    hasEaten = false;
 }
 
 // TODO: Implémenter le destructeur
@@ -12,48 +16,87 @@ Snake::~Snake() {
     // Nettoyage si nécessaire
 }
 
-// TODO: Implémenter le mouvement
 void Snake::move() {
-    // Déplacer le serpent selon la direction
-
-
+    // Mettre à jour la direction actuelle
+    currentDirection = nextDirection;
+    
+    // Calculer la nouvelle position de la tête
+    std::pair<int, int> newHead = body.front();
+    switch (currentDirection) {
+        case Direction::UP:
+            newHead.second -= 1;
+            break;
+        case Direction::DOWN:
+            newHead.second += 1;
+            break;
+        case Direction::LEFT:
+            newHead.first -= 1;
+            break;
+        case Direction::RIGHT:
+            newHead.first += 1;
+            break;
+    }
+    
+    // Ajouter la nouvelle tête
+    body.insert(body.begin(), newHead);
+    
+    // Supprimer la queue sauf si le serpent a mangé
+    if (!hasEaten) {
+        body.pop_back();
+    } else {
+        hasEaten = false;
+    }
+}void Snake::changeDirection(Direction newDirection) {
+    // Empêcher le serpent de faire demi-tour
+    if ((currentDirection == Direction::UP && newDirection == Direction::DOWN) ||
+        (currentDirection == Direction::DOWN && newDirection == Direction::UP) ||
+        (currentDirection == Direction::LEFT && newDirection == Direction::RIGHT) ||
+        (currentDirection == Direction::RIGHT && newDirection == Direction::LEFT)) {
+        return;
+    }
+    
+    nextDirection = newDirection;
 }
 
-// TODO: Implémenter le changement de direction
-void Snake::changeDirection(Direction newDirection) {
-    // Changer la direction si valide (pas opposée)
-}
-
-// TODO: Implémenter la croissance
 void Snake::grow() {
-    // Augmenter la taille du serpent
-    body.push_back(body.back());
+    hasEaten = true;
 }
 
-// TODO: Implémenter le reset
 void Snake::reset(int startX, int startY) {
-    // Remettre le serpent à l'état initial
     body.clear();
     body.push_back({startX, startY});
+    body.push_back({startX - 1, startY});
+    body.push_back({startX - 2, startY});
     
+    currentDirection = Direction::RIGHT;
+    nextDirection = Direction::RIGHT;
+    hasEaten = false;
 }
 
-// TODO: Implémenter la détection d'auto-collision
 bool Snake::checkSelfCollision() const {
-    // Vérifier si la tête touche le corps
+    if (body.size() < 2) return false;
+    
+    std::pair<int, int> head = body.front();
+    
+    // Vérifier si la tête est sur le corps (ignorer le premier segment qui est la tête)
+    for (size_t i = 1; i < body.size(); ++i) {
+        if (body[i].first == head.first && body[i].second == head.second) {
+            return true;
+        }
+    }
+    
     return false;
 }
 
-// TODO: Implémenter la détection de collision avec les murs
 bool Snake::checkWallCollision(int boardWidth, int boardHeight) const {
-    // Vérifier si le serpent sort du plateau
-    return false;
+    std::pair<int, int> head = body.front();
+    
+    return (head.first < 0 || head.first >= boardWidth || 
+            head.second < 0 || head.second >= boardHeight);
 }
 
-// TODO: Implémenter les getters
 std::pair<int, int> Snake::getHead() const {
-    // Retourner la position de la tête
-    return {0, 0};
+    return body.empty() ? std::make_pair(0, 0) : body.front();
 }
 
 const std::vector<std::pair<int, int>>& Snake::getBody() const {
