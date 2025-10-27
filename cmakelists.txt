@@ -1,70 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
-project("SnakeGame" VERSION "1.0.0")
+project("wingame" VERSION "1.0.0")
 
-# Configuration C++17 (requis pour structured bindings)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-# Définir les fichiers source
-set(SNAKE_SOURCES
-    "main_snake.cpp"
-    "src/Game.cpp"
-    "src/Snake.cpp"
-    "src/Food.cpp"
-    "src/Board.cpp"
-    "src/InputHandler.cpp"
-    "src/Utils.cpp"
-)
-
-# Définir les fichiers headers
-set(SNAKE_HEADERS
-    "src/Game.hpp"
-    "src/snake.hpp"
-    "src/Food.hpp"
-    "src/Board.hpp"
-    "src/InputHandler.hpp"
-    "src/Utils.hpp"
-)
 
 # Créer l'exécutable Snake
-add_executable(${CMAKE_PROJECT_NAME} 
-    ${SNAKE_SOURCES}
-    ${SNAKE_HEADERS}
-)
+add_executable(${CMAKE_PROJECT_NAME} main.cpp)
 
-# Inclure les répertoires d'en-têtes
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE 
-    "${CMAKE_CURRENT_SOURCE_DIR}"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src"
-)
-
-# Configuration spécifique à Windows
-if(WIN32)
-    # Lier les bibliothèques Windows nécessaires pour la console
-    target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE)
-    
-    # Définir la macro pour Windows
-    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE _WIN32)
-endif()
-
-# Configuration de compilation
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Wall -Wextra -O2)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE /W4 /O2)
-endif()
-
-# Afficher les informations de compilation
-message(STATUS "Building Snake Game")
-message(STATUS "C++ Standard: ${CMAKE_CXX_STANDARD}")
-message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
-message(STATUS "Compiler: ${CMAKE_CXX_COMPILER_ID}")
-
-# Cible personnalisée pour nettoyer et compiler
-add_custom_target(run
-    COMMAND ${CMAKE_PROJECT_NAME}
-    DEPENDS ${CMAKE_PROJECT_NAME}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "Running Snake Game..."
-)
